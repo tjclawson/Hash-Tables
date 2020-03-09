@@ -51,7 +51,7 @@ class HashTable:
 
         Fill this in.
         '''
-        pass
+        self.storage[self._hash_mod(key)] = value
 
 
 
@@ -63,7 +63,13 @@ class HashTable:
 
         Fill this in.
         '''
-        pass
+        hash_key = self._hash_mod(key)
+        if hash_key >= self.capacity:
+            print("WARNING: Key does not exist")
+            return
+
+        self.storage[hash_key] = None
+
 
 
     def retrieve(self, key):
@@ -74,7 +80,11 @@ class HashTable:
 
         Fill this in.
         '''
-        pass
+        hash_key = self._hash_mod(key)
+        if hash_key > self.capacity:
+            return None
+
+        return self.storage[hash_key]
 
 
     def resize(self):
