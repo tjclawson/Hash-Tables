@@ -52,8 +52,18 @@ class HashTable:
         index = self._hash_mod(key)
 
         if self.storage[index] is not None:
-            print("Error: Key in use")
-            # TODO LL Chaining
+            current_pair = self.storage[index]
+
+            # loop to iterate til next is none or key matches
+            while current_pair is not None:
+                if current_pair.key == key:
+                    current_pair.value = value
+                    return
+                elif current_pair.next is None:
+                    current_pair.next = LinkedPair(key, value)
+                else:
+                    current_pair = current_pair.next
+
         else:
             self.storage[index] = LinkedPair(key, value)
 
@@ -81,7 +91,12 @@ class HashTable:
         """
         index = self._hash_mod(key)
         if self.storage[index]:
-            return self.storage[index].value
+            current_pair = self.storage[index]
+            while current_pair is not None:
+                if current_pair.key == key:
+                    return current_pair.value
+                else:
+                    current_pair = current_pair.next
         else:
             return None
 
@@ -97,7 +112,11 @@ class HashTable:
         self.storage = [None] * self.capacity
 
         for bucket_item in old_storage:
-            self.insert(bucket_item.key, bucket_item.value)
+            if bucket_item is not None:
+                self.insert(bucket_item.key, bucket_item.value)
+                while bucket_item.next is not None:
+                    self.insert(bucket_item.next.key, bucket_item.next.value)
+                    bucket_item = bucket_item.next
 
 
 if __name__ == "__main__":
