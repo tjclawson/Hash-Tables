@@ -76,8 +76,15 @@ class HashTable:
         Fill this in.
         """
         index = self._hash_mod(key)
-        if self.storage[index] is not None:
-            self.storage[index] = None
+        current_node = self.storage[index].next
+        previous_node = self.storage[index]
+        if previous_node.key == key:
+            self.storage[index] = previous_node.next
+        elif current_node is not None:
+            while current_node.key != key:
+                current_node = current_node.next
+                previous_node = previous_node.next
+            previous_node.next = current_node.next
         else:
             print("Warning: Key not found")
 
@@ -117,6 +124,30 @@ class HashTable:
                 while bucket_item.next is not None:
                     self.insert(bucket_item.next.key, bucket_item.next.value)
                     bucket_item = bucket_item.next
+
+ht = HashTable(8)
+
+ht.insert("key-0", "val-0")
+ht.insert("key-1", "val-1")
+ht.insert("key-2", "val-2")
+ht.insert("key-3", "val-3")
+ht.insert("key-4", "val-4")
+ht.insert("key-5", "val-5")
+ht.insert("key-6", "val-6")
+ht.insert("key-7", "val-7")
+ht.insert("key-8", "val-8")
+ht.insert("key-9", "val-9")
+
+ht.remove("key-0")
+ht.remove("key-1")
+ht.remove("key-2")
+ht.remove("key-3")
+ht.remove("key-4")
+ht.remove("key-5")
+ht.remove("key-6")
+ht.remove("key-7")
+ht.remove("key-8")
+ht.remove("key-9")
 
 
 if __name__ == "__main__":
